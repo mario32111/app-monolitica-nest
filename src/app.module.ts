@@ -2,18 +2,20 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { mongoseModule } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 @Module({
-  imports: [ConfigModule.forRoot({
+  imports: [
+    ConfigModule.forRoot({
     //configuracion del archivo .env
-    envFilePath: ['.env.developmend'],
+    envFilePath: ['.env.development'],
     isGlobal: true,
   }),
   //conexion a la base de datos
-  mongoseModule.forRoot(process.env.URI_MONGODB),
+  MongooseModule.forRoot(process.env.URI_MONGODB || 'mongodb://localhost:27017/superflights'),
   UserModule],
   controllers: [AppController],
   providers: [AppService],
-})
+}
+)
 export class AppModule { }
