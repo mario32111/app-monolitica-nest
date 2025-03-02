@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { USER } from 'src/common/models/models'
@@ -18,7 +18,26 @@ export class UserService {
 
     async create(userDto: UserDto): Promise<IUser> {
         const hash = await this.hashPassword(userDto.password);
-        const newUser = new this.model({...userDto, hash});
+        const newUser = new this.model({...userDto, password: hash});
         return await newUser.save();
     }   
+
+    async findAll(): Promise<IUser[]> {
+        return await this.model.find();
+    }
+
+    async findOne(id: string): Promise<IUser | null> {
+        return await this.model.findById(id);
+    }
+
+    async update(id: string, userDto: UserDto): Promise<IUser | null> {
+        const hash = await this.hashPassword(userDto.password)
+        const user = {...userDto, password: hash}
+        return await this.model.findByIdAndUpdate(id, user, {new: true}); 
+    }
+
+    async delete(id: string): Promise<{ status: number, message: string }> {
+        await this.model.findByIdAndDelete(id);
+        return { status: HttpStatus.OK, message: 'User deleted successfully' };
+    }
 }
