@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { PassengerModule } from './passenger/passenger.module';
+import { FlightModule } from './flight/flight.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,7 +16,8 @@ import { PassengerModule } from './passenger/passenger.module';
   //conexion a la base de datos
   MongooseModule.forRoot(process.env.URI_MONGODB || 'mongodb://localhost:27017/superflights'),
   UserModule,
-  PassengerModule],
+  PassengerModule,
+  FlightModule],
   controllers: [AppController],
   providers: [AppService],
 }
