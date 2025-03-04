@@ -2,7 +2,10 @@ import { Body, Controller, Post, Get, Param, Put, Delete, HttpException, HttpSta
 import { FlightDto } from './dto/flight.dto';
 import { FlightService } from './flight.service';
 import { PassengerService } from 'src/passenger/passenger.service';
+import { ApiTags } from '@nestjs/swagger';
 
+//etiqueta en swagger
+@ApiTags("Flights")
 @Controller('api/v1/flight')
 export class FlightController {
     constructor(
